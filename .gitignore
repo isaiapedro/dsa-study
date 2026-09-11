@@ -1,0 +1,14 @@
+__pycache__/
+.pytest_cache/
+*.egg-info/
+.venv/
+
+# Reproducible local LeetCode material; never commit fetched statements or site output.
+data/*
+!data/.gitkeep
+.dsa-study/
+site/
+
+# Personal solution work is intentionally local.
+solutions/*
+!solutions/.gitkeep

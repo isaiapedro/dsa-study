@@ -1,0 +1,65 @@
+id: dsa_study
+type: side_project
+name: DSA Study
+version: 0.1.0
+status: active
+owner: Pedro
+description: >
+  Local, privacy-preserving LeetCode catalog and Python workspace for
+  data-structures, algorithms, and computer-science study.
+tags:
+  - dsa
+  - algorithms
+  - leetcode
+  - study
+exports: []
+depends_on:
+  - registry
+  - workspace/side_projects
+interfaces:
+  agent_instructions: workspace/side_projects/dsa_study/AGENTS.md
+  system_contract: workspace/side_projects/dsa_study/SYSTEM.md
+  behavior_contract: workspace/side_projects/dsa_study/BEHAVIOR.md
+  project_readme: workspace/side_projects/dsa_study/README.md
+  task_register: workspace/side_projects/dsa_study/TASKS.md
+  roadmap: workspace/side_projects/dsa_study/ROADMAP.md
+  decision_log: workspace/side_projects/dsa_study/DECISIONS.md
+  state_record: workspace/side_projects/dsa_study/STATE.md
+  audit_log: workspace/side_projects/dsa_study/AUDIT.md
+  traceability_log: workspace/side_projects/dsa_study/TRACEABILITY.md
+  logging_contract: workspace/side_projects/dsa_study/LOGGING.md
+  testing_contract: workspace/side_projects/dsa_study/TESTING.md
+  registry_update_contract: workspace/side_projects/dsa_study/REGISTRY_UPDATE.md
+agent_contract:
+  required_interface_keys:
+    - agent_instructions
+    - task_register
+    - roadmap
+    - decision_log
+    - state_record
+    - audit_log
+    - traceability_log
+    - logging_contract
+    - testing_contract
+    - registry_update_contract
+  required_markdown_sections:
+    agent_instructions:
+      - Registry update intent
+      - Required records after a change
+    state_record:
+      - Current status
+      - Repository and Registry boundary
+    audit_log:
+      - Audit log
+    traceability_log:
+      - Scope and provenance boundary
+      - Authoritative records
+    logging_contract:
+      - Logging boundary
+    testing_contract:
+      - Required verification
+    registry_update_contract:
+      - Update registry of this folder
+      - Completion gate
+stage: prototype
+priority: medium
