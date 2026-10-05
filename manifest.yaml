@@ -16,6 +16,7 @@ exports: []
 depends_on:
   - registry
   - workspace/side_projects
+  - knowledge/technology
 interfaces:
   agent_instructions: workspace/side_projects/dsa_study/AGENTS.md
   system_contract: workspace/side_projects/dsa_study/SYSTEM.md
@@ -30,6 +31,8 @@ interfaces:
   logging_contract: workspace/side_projects/dsa_study/LOGGING.md
   testing_contract: workspace/side_projects/dsa_study/TESTING.md
   registry_update_contract: workspace/side_projects/dsa_study/REGISTRY_UPDATE.md
+  runner_validation: workspace/side_projects/dsa_study/RUNNER_VALIDATION.md
+  academic_reference_guidelines: workspace/side_projects/dsa_study/ACADEMIC_REFERENCE_GUIDELINES.md
 agent_contract:
   required_interface_keys:
     - agent_instructions

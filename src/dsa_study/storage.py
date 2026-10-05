@@ -23,6 +23,11 @@ def checkpoint_path(root: Path) -> Path:
     return root / ".dsa-study" / "sync-state.json"
 
 
+def progress_path(root: Path) -> Path:
+    """Return the private, local-only learning-history path."""
+    return root / ".dsa-study" / "progress.json"
+
+
 def read_json(path: Path, default: Any) -> Any:
     if not path.exists():
         return default

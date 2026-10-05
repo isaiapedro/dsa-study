@@ -76,7 +76,7 @@ def extract_examples(markup: str) -> list[dict[str, str]]:
     parser.feed(markup or "")
     text = parser.text()
     pattern = re.compile(
-        r"Input:\s*(?P<input>.*?)\s*Output:\s*(?P<output>.*?)(?=\s*(?:Explanation|Input|Constraints):|$)",
+        r"Input:\s*(?P<input>.*?)\s*Output:\s*(?P<output>.*?)(?=\s*(?:Example\s+\d+|Explanation|Input|Constraints):|$)",
         re.IGNORECASE | re.DOTALL,
     )
     return [

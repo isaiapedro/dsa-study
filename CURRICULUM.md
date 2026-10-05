@@ -1,112 +1,67 @@
-# Curated CS Curriculum
+# Data structures and algorithms
 
-This is project-authored study guidance. It is deliberately separate from the
-LeetCode catalog in `data/` and its generated `site/`: this file contains no
-problem statements, scraped examples, account data, or solution history.
+Start with one section, not a whole module. Read the explanation, predict the next step of its example, complete the small exercise, and then try the LeetCode problems. Before coding, explain what is given, what must be returned, what you will keep between steps, and why the method fits. Check a smallest input and correct your reasoning after seeing the result.
 
-The links below are pointers to public learning resources. Read them in a
-browser when useful; do not download their content into this project unless a
-future decision explicitly establishes a licensing and storage policy.
+Use the project's 45-minute session: recall 3 minutes, explanation 7, trace 7, complete a step 8, compare methods 4, independent attempt 10, and feedback 6. Keep tool use within 8 minutes. Revisit an earlier idea in a later session by answering from memory before opening the notes.
 
-## How to use this guide
+## Contents
 
-Work through a concept in order: state its invariant or contract, implement a
-small version from memory, analyse its time and space cost, then use the local
-catalog to find problems carrying the matching official topic tag. A solved
-problem is practice evidence, not a replacement for understanding the model.
+1. [Algorithms and mathematical tools](learning_blocks/01-foundations.md)
+2. [Arrays, lists, stacks, and queues](learning_blocks/02-arrays.md)
+3. [Searching arrays and using windows](learning_blocks/03-searching.md)
+4. [Sorting and selecting](learning_blocks/04-sorting.md)
+5. [Recursion, randomness, and amortized cost](learning_blocks/05-analysis.md)
+6. [Hash tables and symbol tables](learning_blocks/06-hashing.md)
+7. [Search trees and larger indexes](learning_blocks/07-trees.md)
+8. [Disjoint sets and range queries](learning_blocks/08-union-find.md)
+9. [Dynamic programming](learning_blocks/09-dynamic-programming.md)
+10. [Greedy choices and online decisions](learning_blocks/10-greedy.md)
+11. [Graph representations and traversal](learning_blocks/11-graphs.md)
+12. [Spanning trees and shortest paths](learning_blocks/12-weighted-graphs.md)
+13. [Flow, matching, and assignment](learning_blocks/13-flow.md)
+14. [String sorting, tries, and matching](learning_blocks/14-strings.md)
+15. [Regular expressions and compression](learning_blocks/15-compression.md)
+16. [Matrices, linear programming, and FFT](learning_blocks/16-numerical.md)
+17. [Number theory and bit operations](learning_blocks/17-number-theory.md)
+18. [Parallel algorithms and simulation](learning_blocks/18-parallel.md)
+19. [Clustering, weights, and gradient descent](learning_blocks/19-learning.md)
+20. [Hard problems and approximation](learning_blocks/20-hard-problems.md)
 
-## Foundations
+Each numbered section includes practice. A related LeetCode problem is labeled when it exercises only part of an advanced topic; use the original local exercise for the remaining concept. Some external problems require a subscription.
 
-### Cost models and correctness
+## Textbook reading map
 
-**Note.** Describe work as a function of input size, name the dominant
-operation, and account for auxiliary memory separately from the input. For a
-loop invariant, write what is true before each iteration, show that one step
-preserves it, and show that termination establishes the desired result.
+CLRS means Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, fourth edition. Sedgewick/Wayne means Algorithms, fourth edition.
 
-**Read.** [MIT 6.006: Introduction to Algorithms](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/) for an algorithms course with readings, notes, and exercises; [Algorithms, 4th Edition](https://algs4.cs.princeton.edu/home/) for analysis and implementation-oriented reference material.
+| Module | CLRS chapters or appendices | Sedgewick/Wayne sections |
+| --- | --- | --- |
+| [1. Algorithms and mathematical tools](learning_blocks/01-foundations.md) | 1, 2, 3, A, B, C, D | 1.1, 1.2, 1.4 |
+| [2. Arrays, lists, stacks, and queues](learning_blocks/02-arrays.md) | 10 | 1.3 |
+| [3. Searching arrays and using windows](learning_blocks/03-searching.md) | Companion practice | 1.1, 3.1 |
+| [4. Sorting and selecting](learning_blocks/04-sorting.md) | 6, 7, 8, 9 | 2.1, 2.2, 2.3, 2.4, 2.5 |
+| [5. Recursion, randomness, and amortized cost](learning_blocks/05-analysis.md) | 4, 5, 16 | 1.4 |
+| [6. Hash tables and symbol tables](learning_blocks/06-hashing.md) | 11 | 3.1, 3.4, 3.5 |
+| [7. Search trees and larger indexes](learning_blocks/07-trees.md) | 12, 13, 17, 18 | 3.2, 3.3, 6.2 |
+| [8. Disjoint sets and range queries](learning_blocks/08-union-find.md) | 19 | 1.5 |
+| [9. Dynamic programming](learning_blocks/09-dynamic-programming.md) | 14 | CLRS extension |
+| [10. Greedy choices and online decisions](learning_blocks/10-greedy.md) | 15, 27 | 2.5 |
+| [11. Graph representations and traversal](learning_blocks/11-graphs.md) | 20 | 4.1, 4.2 |
+| [12. Spanning trees and shortest paths](learning_blocks/12-weighted-graphs.md) | 21, 22, 23 | 4.3, 4.4 |
+| [13. Flow, matching, and assignment](learning_blocks/13-flow.md) | 24, 25 | 6.4 |
+| [14. String sorting, tries, and matching](learning_blocks/14-strings.md) | 32 | 5.1, 5.2, 5.3, 6.3 |
+| [15. Regular expressions and compression](learning_blocks/15-compression.md) | 15 | 5.4, 5.5 |
+| [16. Matrices, linear programming, and FFT](learning_blocks/16-numerical.md) | 28, 29, 30 | CLRS extension |
+| [17. Number theory and bit operations](learning_blocks/17-number-theory.md) | 31 | CLRS extension |
+| [18. Parallel algorithms and simulation](learning_blocks/18-parallel.md) | 26 | 6.1 |
+| [19. Clustering, weights, and gradient descent](learning_blocks/19-learning.md) | 33 | CLRS extension |
+| [20. Hard problems and approximation](learning_blocks/20-hard-problems.md) | 34, 35 | 6.5, 6.6 |
 
-### Arrays, strings, and linked structures
+The modules cover the chapter topics across both books, including CLRS A–D and the six topics in Sedgewick/Wayne's Context chapter. They provide original introductory explanations and exercises. The textbooks supply the complete proofs, detailed implementations, and larger exercise sets.
 
-**Note.** Arrays trade fixed indexing for costly middle insertion; linked
-structures trade traversal time for local rewiring. Two pointers require a
-clear monotonicity argument. Sliding windows work when expanding and shrinking
-the window preserves a useful condition.
+## References
 
-**Practice lens.** State what each pointer bounds and whether every pointer
-only moves forward. This turns an apparent nested loop into a linear amortized
-argument when appropriate.
+The [CLRS source record](../../../knowledge/technology/wiki/papers/learning-introduction-to-algorithms-fourth-edition.md) and [Sedgewick/Wayne source record](../../../knowledge/technology/wiki/papers/learning-algorithms-fourth-edition-sedgewick-wayne.md) guide the subject coverage. Chapter numbering was checked against the local contents and the [official Context index](https://algs4.cs.princeton.edu/60context/).
 
-## Core data structures
+The Technology wiki provides bounded supporting references on [hashing](../../../knowledge/technology/wiki/papers/learning-uniform-and-universal-hashing.md), [amortized analysis](../../../knowledge/technology/wiki/papers/learning-two-decades-of-automatic-amortized-resource-analysis.md), and [string matching](../../../knowledge/technology/wiki/papers/learning-a-survey-of-string-matching-algorithms.md). Its [CP-Algorithms record](../../../knowledge/technology/wiki/papers/cp-algorithms-corpus.md) locates further algorithm references. These sources support claims within their stated assumptions; a wiki record is not independent proof of every implementation or learning outcome.
 
-### Stacks, queues, and hashing
-
-**Note.** A stack models last-in, first-out state; a queue models first-in,
-first-out work. Hash tables offer expected constant-time lookup only under a
-specified collision strategy and load factor; do not claim a worst-case bound
-without qualifying it.
-
-**Read.** [Princeton’s fundamentals and searching chapters](https://algs4.cs.princeton.edu/home/) cover stacks, queues, symbol tables, and hash tables.
-
-### Trees, heaps, and disjoint sets
-
-**Note.** Tree algorithms should identify the traversal order and the value
-returned by each subtree. A binary heap maintains an ordering relation only
-between a node and its children, not a globally sorted layout. Union-find
-combines components efficiently when path compression and union by rank/size
-are used together.
-
-**Read.** [cp-algorithms: data structures](https://cp-algorithms.com/data_structures/) is a focused reference for disjoint sets and range-query structures; use its material as a reference rather than importing it.
-
-## Algorithmic techniques
-
-### Sorting, searching, and divide and conquer
-
-**Note.** Binary search needs an explicit monotone predicate and interval
-convention. Divide and conquer needs a recurrence that includes both subproblem
-cost and combine cost. Stable sorting preserves the relative order of equal
-keys; in-place sorting describes auxiliary-space use, not necessarily input
-mutation safety in every language API.
-
-**Read.** [Princeton’s sorting chapter](https://algs4.cs.princeton.edu/20sorting/) and [MIT 6.006 course materials](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/).
-
-### Graphs
-
-**Note.** Choose the representation before the traversal: adjacency lists are
-usually appropriate for sparse graphs, while matrices make edge tests direct.
-BFS finds shortest paths by edge count in an unweighted graph; Dijkstra’s
-algorithm requires non-negative edge weights. A topological order exists
-exactly for directed acyclic graphs.
-
-**Read.** [Princeton’s graph chapter](https://algs4.cs.princeton.edu/40graphs/) for traversal, shortest paths, and minimum spanning trees.
-
-### Dynamic programming and greedy choice
-
-**Note.** A dynamic-programming state must contain enough information to make
-the remaining subproblem independent of earlier choices. Define the state,
-transition, base cases, evaluation order, and answer location before coding.
-A greedy algorithm needs an exchange argument or another proof that a locally
-optimal choice can occur in some global optimum.
-
-**Read.** [cp-algorithms: dynamic programming](https://cp-algorithms.com/dynamic_programming/intro-to-dp.html) for a compact implementation reference, and the [MIT course](https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-fall-2011/) for broader algorithmic analysis.
-
-## Advanced practice topics
-
-### Backtracking, bit manipulation, and strings
-
-**Note.** Backtracking explores a decision tree; pruning must be justified by a
-constraint that cannot be repaired below the current state. Bit operations are
-integer operations, so write down the bit-width and signedness assumptions.
-For string matching, distinguish preprocessing cost from per-query cost.
-
-**Read.** [cp-algorithms](https://cp-algorithms.com/) indexes bit manipulation, string algorithms, and combinatorics in one maintained reference.
-
-## Boundaries and maintenance
-
-- Keep factual, personal progress notes out of this file; future private
-  tracking belongs in an ignored local store.
-- Keep imported LeetCode material in the ignored `data/` and `site/` paths.
-- Add a source only after checking its access terms and relevance. Store a link
-  and a short purpose statement here; do not copy source text.
-- Review links periodically. A broken or changed resource should be replaced
-  with another link, not mirrored locally by default.
+Worked examples, completion exercises, feedback, recall, and later review follow [the project learning guidelines](LEARNING_EXPERIENCE_DESIGN.md), [practice and feedback](../../../knowledge/planning_science/wiki/concepts/problem-solving-practice-and-feedback.md), [retrieval and spaced review](../../../knowledge/planning_science/wiki/concepts/retrieval-practice-and-spaced-review.md), and [related-technique comparisons](../../../knowledge/planning_science/wiki/papers/learning-a-systematic-review-of-interleaving-as-a-concept-learning-strategy.md).

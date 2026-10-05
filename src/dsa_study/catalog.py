@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+import json
 from pathlib import Path
 from typing import Any
 
@@ -53,6 +54,45 @@ def build_topics(problems: list[dict[str, Any]]) -> list[dict[str, Any]]:
             entry = registry.setdefault(slug, {"slug": slug, "name": topic.get("name") or slug, "problem_count": 0})
             entry["problem_count"] += 1
     return sorted(registry.values(), key=lambda item: (item["name"].casefold(), item["slug"]))
+
+
+def audit_catalog(document: dict[str, Any]) -> dict[str, int]:
+    """Return coverage counts without copying provider content into source records."""
+    problems = document.get("problems") or []
+    available = [row for row in problems if row.get("detail_status") == "available"]
+    compatible = 0
+    for row in available:
+        try:
+            metadata = json.loads(row.get("metadata") or "{}")
+        except (TypeError, ValueError):
+            metadata = {}
+        compatible += bool(row.get("python_starter") and isinstance(metadata.get("name"), str) and isinstance(metadata.get("params"), list))
+    return {
+        "problems": len(problems), "public_details": len(available),
+        "paid_or_unavailable": len(problems) - len(available),
+        "missing_topics": sum(not row.get("topics") for row in problems),
+        "missing_examples": sum(not row.get("examples") for row in available),
+        "missing_python_starter": sum(not row.get("python_starter") for row in available),
+        "runner_compatible": compatible,
+    }
+
+
+def repair_examples(document: dict[str, Any]) -> int:
+    """Re-extract local generated examples after an extractor improvement.
+
+    This never fetches a provider response. It only derives fresh structured
+    fields from the already ignored local statement markup.
+    """
+    repaired = 0
+    for row in document.get("problems") or []:
+        markup = row.get("statement_html")
+        if not markup:
+            continue
+        examples = extract_examples(markup)
+        if examples and examples != row.get("examples"):
+            row["examples"] = examples
+            repaired += 1
+    return repaired
 
 
 def sync(root: Path, client: LeetCodeClient, *, resume: bool = False, page_size: int = 100) -> dict[str, Any]:

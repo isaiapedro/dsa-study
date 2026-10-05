@@ -1,0 +1,1713 @@
+{
+  "format": "dsa-study.learning-blocks/v1",
+  "boundary": "Project-authored instructional material only. No fetched LeetCode statements, third-party solutions, or personal learner records.",
+  "blocks": [
+    {
+      "id": "arrays-indexing-contracts",
+      "title": "Arrays and positions",
+      "sequence": 1,
+      "duration_minutes": 45,
+      "tool_time_ceiling_minutes": 8,
+      "outcomes": {
+        "foundation": "Read an array safely and find the first matching position.",
+        "interview": "Trace a single-pass array scan without an off-by-one error.",
+        "professional_transfer": "Choose an indexed representation when direct position lookup is more valuable than cheap middle insertion."
+      },
+      "target": "Read an array safely and find the first matching position.",
+      "expected_complexity": "Index lookup is O(1); a complete scan is O(n) time and O(1) extra space.",
+      "curriculum_context": {
+        "part_of": "Arrays, lists, stacks, and queues",
+        "prerequisites": [],
+        "selection_dimensions": [
+          "the input has stable positions",
+          "direct lookup by position matters",
+          "middle insertion is not the dominant operation"
+        ]
+      },
+      "schedule": [
+        [
+          "retrieval opener",
+          3
+        ],
+        [
+          "concept model",
+          7
+        ],
+        [
+          "worked trace",
+          7
+        ],
+        [
+          "guided construction",
+          8
+        ],
+        [
+          "contrast",
+          4
+        ],
+        [
+          "deliberate practice",
+          10
+        ],
+        [
+          "feedback and exit",
+          6
+        ]
+      ],
+      "theory": "An array stores items at numbered positions, starting at zero. In [7, 2, 9, 4], position 2 holds 9. For n items, read only positions 0 through n - 1. A scan checks each position once and stops when it reaches n. Direct indexing takes O(1), while a complete scan takes O(n) time and O(1) extra space. Inserting in the middle can take O(n) because later items must move.",
+      "visual": {
+        "kind": "indexed-array-trace",
+        "label": "Array of length 4; i is the next position to inspect.",
+        "prediction_checkpoint": "Before revealing state 3, predict whether i may advance again and name the bounds condition.",
+        "required_controls": [
+          "play",
+          "pause",
+          "step",
+          "reset"
+        ],
+        "states": [
+          {
+            "step": 1,
+            "array": [
+              7,
+              2,
+              9,
+              4
+            ],
+            "i": 0,
+            "message": "i = 0 is valid; inspect 7."
+          },
+          {
+            "step": 2,
+            "array": [
+              7,
+              2,
+              9,
+              4
+            ],
+            "i": 3,
+            "message": "i = 3 is valid; inspect 4."
+          },
+          {
+            "step": 3,
+            "array": [
+              7,
+              2,
+              9,
+              4
+            ],
+            "i": 4,
+            "message": "Stop before reading: i = n is outside the array."
+          }
+        ]
+      },
+      "question_provenance": "project-authored-review-required",
+      "pre_code_checkpoint": {
+        "purpose": "Name the input, the answer, what you keep between steps, and why this method fits.",
+        "prompts": [
+          {
+            "lens": "input_output",
+            "label": "Input and output",
+            "prompt": "What is the input, and exactly what value or absence result must the scan return?"
+          },
+          {
+            "lens": "constraint",
+            "label": "Constraint",
+            "prompt": "Which bounds must hold before any indexed read?"
+          },
+          {
+            "lens": "state_invariant",
+            "label": "State and invariant",
+            "prompt": "What does i mean, and what has already been checked when the loop repeats?"
+          },
+          {
+            "lens": "selection",
+            "label": "Technique selection",
+            "prompt": "Why is a direct scan appropriate here rather than a representation optimized for middle insertion?"
+          }
+        ]
+      },
+      "questions": [
+        {
+          "id": "prior-retrieval",
+          "kind": "retrieval",
+          "prompt": "Without notes, what does O(n) say about a single pass as input length grows?",
+          "feedback": "It describes growth proportional to input length, not a fixed elapsed time."
+        },
+        {
+          "id": "contract",
+          "kind": "invariant",
+          "prompt": "What must be true immediately before reading array[i]?",
+          "feedback": "The index must satisfy 0 <= i < n."
+        },
+        {
+          "id": "prediction",
+          "kind": "next-state",
+          "prompt": "At i = 3 in an array of length 4, may the scan inspect one more position after this one? Why?",
+          "feedback": "No; the next index would be 4, which fails i < n."
+        },
+        {
+          "id": "contrast",
+          "kind": "contrast",
+          "prompt": "When would a linked structure be preferable to an array even though indexing is slower?",
+          "feedback": "When local insertion or removal after a known node matters more than direct indexing."
+        },
+        {
+          "id": "exit",
+          "kind": "invalid-use",
+          "prompt": "What would make direct array indexing invalid?",
+          "feedback": "The position must be from 0 through n - 1. Negative Python indices have a separate meaning and are not part of this scan."
+        }
+      ],
+      "worked_example": {
+        "input": "[7, 2, 9, 4], target = 9",
+        "model": "Inspect indices 0, 1, then 2. At each step, all earlier positions have been checked and i is the first unchecked valid index. Return 2 when the target is found.",
+        "boundary_test": "For an empty array, n = 0 and no index satisfies 0 <= i < n."
+      },
+      "faded_scaffold": {
+        "prompt": "Complete the guard for a scan that returns the first matching index or 'not found'.",
+        "pseudocode": [
+          "i = 0",
+          "while ____:",
+          "    if values[i] == target: return i",
+          "    i = i + 1",
+          "return 'not found'"
+        ],
+        "expected_focus": "Use i < length(values), then explain why no invalid read occurs."
+      },
+      "independent_practice": {
+        "exercise": "Write a tiny function that returns the first index containing an even value in [5, 7, 8, 8], or 'not found' if none exists.",
+        "stop_rule": "Trace your answer, test the smallest input and one ordinary input, then explain its cost.",
+        "evidence": "Your steps, expected answers, and time and memory estimates."
+      },
+      "feedback_checklist": [
+        "Can you explain why each step keeps the answer correct?",
+        "Did you try an empty or smallest input?",
+        "Can you explain the time and extra memory?",
+        "What would you change after checking your result?"
+      ],
+      "exit_summary": "State in two or three sentences why a scan cannot read index n. Then answer: what would make this method invalid?",
+      "course_module": "02-arrays"
+    },
+    {
+      "id": "hashing-collision-reasoning",
+      "title": "Hash tables and collisions",
+      "sequence": 2,
+      "duration_minutes": 45,
+      "tool_time_ceiling_minutes": 8,
+      "outcomes": {
+        "foundation": "Store and find values by key, including when keys share a bucket.",
+        "interview": "Use a lookup table while qualifying expected versus worst-case cost.",
+        "professional_transfer": "Choose a key-based index when lookup by identity is central and collision/load behavior is acceptable."
+      },
+      "target": "Store and find values by key, including when keys share a bucket.",
+      "expected_complexity": "Lookup and insertion are expected O(1) with a controlled load factor; collision chains can make a lookup O(n) in the worst case. Auxiliary space is O(k) for k stored keys.",
+      "curriculum_context": {
+        "part_of": "Hash tables and symbol tables",
+        "prerequisites": [
+          "Arrays and positions"
+        ],
+        "selection_dimensions": [
+          "lookup is by key identity",
+          "expected cost is acceptable under stated hashing assumptions",
+          "ordered traversal is not the primary need"
+        ]
+      },
+      "schedule": [
+        [
+          "retrieval opener",
+          3
+        ],
+        [
+          "concept model",
+          7
+        ],
+        [
+          "worked trace",
+          7
+        ],
+        [
+          "guided construction",
+          8
+        ],
+        [
+          "contrast",
+          4
+        ],
+        [
+          "deliberate practice",
+          10
+        ],
+        [
+          "feedback and exit",
+          6
+        ]
+      ],
+      "theory": "A hash table stores a value under a key. A hash function chooses a bucket, but different keys can choose the same bucket: this is a collision. If 'ant' and 'bee' share a bucket, lookup must compare the stored keys to find the right value. Keeping colliding entries together is called chaining. Lookup is expected O(1) when hashes spread keys well and the table grows with its contents; a bucket containing every key takes O(n) to search.",
+      "visual": {
+        "kind": "hash-bucket-trace",
+        "label": "Three buckets; collisions are stored as a chain and resolved with key equality.",
+        "prediction_checkpoint": "Before revealing state 3, predict what the lookup must compare after it reaches bucket 1.",
+        "required_controls": [
+          "play",
+          "pause",
+          "step",
+          "reset"
+        ],
+        "states": [
+          {
+            "step": 1,
+            "buckets": {
+              "0": [],
+              "1": [
+                [
+                  "ant",
+                  4
+                ]
+              ],
+              "2": []
+            },
+            "message": "hash('ant') selects bucket 1."
+          },
+          {
+            "step": 2,
+            "buckets": {
+              "0": [],
+              "1": [
+                [
+                  "ant",
+                  4
+                ],
+                [
+                  "bee",
+                  8
+                ]
+              ],
+              "2": []
+            },
+            "message": "'bee' collides with 'ant'; both entries remain reachable."
+          },
+          {
+            "step": 3,
+            "buckets": {
+              "0": [],
+              "1": [
+                [
+                  "ant",
+                  4
+                ],
+                [
+                  "bee",
+                  8
+                ]
+              ],
+              "2": []
+            },
+            "lookup": "bee",
+            "message": "Compare keys in bucket 1 until 'bee' matches."
+          }
+        ]
+      },
+      "question_provenance": "project-authored-review-required",
+      "pre_code_checkpoint": {
+        "purpose": "Name the input, the answer, what you keep between steps, and why this method fits.",
+        "prompts": [
+          {
+            "lens": "input_output",
+            "label": "Input and output",
+            "prompt": "What key identifies the value to store or retrieve, and what should an absent key produce?"
+          },
+          {
+            "lens": "constraint",
+            "label": "Constraint",
+            "prompt": "Which collision and load-factor assumptions are required for the expected-time claim?"
+          },
+          {
+            "lens": "state_invariant",
+            "label": "State and invariant",
+            "prompt": "After an insertion, how does every earlier key remain reachable and distinguishable?"
+          },
+          {
+            "lens": "selection",
+            "label": "Technique selection",
+            "prompt": "Why is key lookup a better fit than preserving a sorted order in this task?"
+          }
+        ]
+      },
+      "bridge_card": {
+        "title": "Expected cost has assumptions",
+        "connection": "The core trace establishes connection under collisions. Advanced hashing adds a distribution model and load-factor policy before it can justify expected O(1) behavior.",
+        "question": "Which assumption would you need to inspect before transferring an expected-time claim to a new hash-table implementation?"
+      },
+      "questions": [
+        {
+          "id": "prior-retrieval",
+          "kind": "retrieval",
+          "prompt": "What array property made direct indexing O(1)?",
+          "feedback": "A valid index identifies a position directly; hashing instead computes a bucket from a key."
+        },
+        {
+          "id": "contract",
+          "kind": "invariant",
+          "prompt": "After inserting a colliding key, what must remain true about the earlier key?",
+          "feedback": "It must still be reachable in the bucket and distinguishable by equality."
+        },
+        {
+          "id": "prediction",
+          "kind": "next-state",
+          "prompt": "When lookup for 'bee' reaches bucket 1, what must it do before returning 8?",
+          "feedback": "Compare stored keys for equality; the bucket alone is insufficient."
+        },
+        {
+          "id": "contrast",
+          "kind": "contrast",
+          "prompt": "When is a sorted array with binary search a better fit than a hash table?",
+          "feedback": "When ordered traversal or predictable logarithmic lookup is needed and updates are manageable."
+        },
+        {
+          "id": "exit",
+          "kind": "invalid-use",
+          "prompt": "What would make an expected-O(1) hash-table claim invalid?",
+          "feedback": "Ignoring collisions, a poor distribution, or an unbounded load factor makes that claim unjustified."
+        }
+      ],
+      "worked_example": {
+        "input": "Insert ('ant', 4), then ('bee', 8), where both map to bucket 1; look up 'bee'.",
+        "model": "Keep both pairs in bucket 1. During lookup, reject 'ant' by equality, then accept 'bee'. The invariant is that each inserted pair can still be reached from its bucket.",
+        "boundary_test": "Looking up a key in an empty bucket returns absence without comparing an unrelated bucket."
+      },
+      "faded_scaffold": {
+        "prompt": "Complete the missing condition in a separate-chaining lookup.",
+        "pseudocode": [
+          "bucket = table[hash(key)]",
+          "for stored_key, value in bucket:",
+          "    if ____:",
+          "        return value",
+          "return 'absent'"
+        ],
+        "expected_focus": "Use stored_key == key; explain why matching only the bucket is incorrect."
+      },
+      "independent_practice": {
+        "exercise": "For the records [('red', 1), ('blue', 2), ('red', 3)], trace a map that stores the most recent value for each key. State the result for 'red' and 'green'.",
+        "stop_rule": "Trace your answer, test the smallest input and one ordinary input, then explain its cost.",
+        "evidence": "Your steps, expected answers, and time and memory estimates."
+      },
+      "feedback_checklist": [
+        "Can you explain why each step keeps the answer correct?",
+        "Did you try an empty or smallest input?",
+        "Can you explain the time and extra memory?",
+        "What would you change after checking your result?"
+      ],
+      "exit_summary": "State in two or three sentences why a bucket address is not key equality. Then answer: what would make this method invalid?",
+      "course_module": "06-hashing"
+    },
+    {
+      "id": "two-pointers-monotonic-movement",
+      "title": "Two pointers in a sorted array",
+      "sequence": 3,
+      "duration_minutes": 45,
+      "tool_time_ceiling_minutes": 8,
+      "outcomes": {
+        "foundation": "Find a pair by safely discarding one end at a time.",
+        "interview": "Trace a sorted-pair search with a one-way movement argument.",
+        "professional_transfer": "Recognize when ordered data and a monotone condition permit one-pass boundary narrowing."
+      },
+      "target": "Find a pair by safely discarding one end at a time.",
+      "expected_complexity": "Each pointer moves in one direction at most n times, so the trace is O(n) time and O(1) extra space.",
+      "curriculum_context": {
+        "part_of": "Searching arrays and using windows",
+        "prerequisites": [
+          "Arrays and positions",
+          "Hash-table lookup and collision reasoning (contrast only)"
+        ],
+        "selection_dimensions": [
+          "the data is ordered or can be ordered",
+          "a comparison yields a safe monotone move",
+          "linear extra space is undesirable or ordering is otherwise useful"
+        ]
+      },
+      "schedule": [
+        [
+          "retrieval opener",
+          3
+        ],
+        [
+          "concept model",
+          7
+        ],
+        [
+          "worked trace",
+          7
+        ],
+        [
+          "guided construction",
+          8
+        ],
+        [
+          "contrast",
+          4
+        ],
+        [
+          "deliberate practice",
+          10
+        ],
+        [
+          "feedback and exit",
+          6
+        ]
+      ],
+      "theory": "Place one pointer at each end of a sorted array. To find a target pair sum, add the two values. If the sum is too small, move the left pointer right: using that same left value with any smaller right value would also be too small. If the sum is too large, move the right pointer left for the same reason in reverse. Stop at a match or when the pointers meet. Each pointer moves in one direction, so the scan takes O(n) time and O(1) extra space.",
+      "visual": {
+        "kind": "two-pointer-trace",
+        "label": "Sorted values [1, 3, 4, 8, 11], target 15; left and right bound viable pairs.",
+        "prediction_checkpoint": "Before revealing state 3, predict which pointer moves after 3 + 11 and state which pairs are discarded.",
+        "required_controls": [
+          "play",
+          "pause",
+          "step",
+          "reset"
+        ],
+        "states": [
+          {
+            "step": 1,
+            "values": [
+              1,
+              3,
+              4,
+              8,
+              11
+            ],
+            "left": 0,
+            "right": 4,
+            "sum": 12,
+            "message": "1 + 11 = 12, which is too small; move left rightward."
+          },
+          {
+            "step": 2,
+            "values": [
+              1,
+              3,
+              4,
+              8,
+              11
+            ],
+            "left": 1,
+            "right": 4,
+            "sum": 14,
+            "message": "3 + 11 = 14, which is still too small; move left rightward again."
+          },
+          {
+            "step": 3,
+            "values": [
+              1,
+              3,
+              4,
+              8,
+              11
+            ],
+            "left": 2,
+            "right": 4,
+            "sum": 15,
+            "message": "4 + 11 = 15; the target pair is found."
+          }
+        ]
+      },
+      "question_provenance": "project-authored-review-required",
+      "pre_code_checkpoint": {
+        "purpose": "Name the input, the answer, what you keep between steps, and why this method fits.",
+        "prompts": [
+          {
+            "lens": "input_output",
+            "label": "Input and output",
+            "prompt": "What ordered sequence and target are given, and what pair or absence result is required?"
+          },
+          {
+            "lens": "constraint",
+            "label": "Constraint",
+            "prompt": "What ordering and crossing-boundary conditions must hold for the trace to be valid?"
+          },
+          {
+            "lens": "state_invariant",
+            "label": "State and invariant",
+            "prompt": "What possible answers remain between left and right before each move?"
+          },
+          {
+            "lens": "selection",
+            "label": "Technique selection",
+            "prompt": "Why does a monotone move fit this input better than a hash lookup?"
+          }
+        ]
+      },
+      "bridge_card": {
+        "title": "From two pointers to a sliding window",
+        "connection": "Both techniques move boundaries one way, but a sliding window requires a separately justified condition for expanding and shrinking a contiguous range.",
+        "question": "What monotone condition would you need before reusing this boundary-movement idea for a window problem?"
+      },
+      "questions": [
+        {
+          "id": "prior-retrieval",
+          "kind": "retrieval",
+          "prompt": "What qualified cost should you state for a hash-table lookup with collisions?",
+          "feedback": "Expected O(1) under assumptions, with a possible linear worst case."
+        },
+        {
+          "id": "contract",
+          "kind": "invariant",
+          "prompt": "What region contains every pair not yet ruled out?",
+          "feedback": "The inclusive interval between left and right, together with its possible pairs."
+        },
+        {
+          "id": "prediction",
+          "kind": "next-state",
+          "prompt": "In [1, 3, 4, 8, 11] with target 15, 3 + 11 is too small. Which pointer moves and why?",
+          "feedback": "Move left rightward: with 3, every smaller right value would make the sum no larger."
+        },
+        {
+          "id": "contrast",
+          "kind": "contrast",
+          "prompt": "When should you prefer a hash lookup over two pointers for a pair search?",
+          "feedback": "When input order cannot support a safe monotone move and extra space is acceptable."
+        },
+        {
+          "id": "exit",
+          "kind": "invalid-use",
+          "prompt": "What would make this two-pointer movement rule invalid?",
+          "feedback": "Without an ordering or monotone comparison argument, moving a boundary can discard a viable answer."
+        }
+      ],
+      "worked_example": {
+        "input": "Sorted values [1, 3, 4, 8, 11], target = 15",
+        "model": "Start at 1 and 11. Their sum is too small, so increment left; 3 + 11 is still too small, so increment left again; 4 + 11 finds the target. Each move removes only pairs that cannot meet the target because the values are sorted.",
+        "boundary_test": "With fewer than two values, there is no valid pair and the pointers must not cross into a read."
+      },
+      "faded_scaffold": {
+        "prompt": "Complete the move rule for a sorted pair-sum trace.",
+        "pseudocode": [
+          "left, right = 0, length(values) - 1",
+          "while left < right:",
+          "    total = values[left] + values[right]",
+          "    if total < target: left = left + 1",
+          "    elif total > target: ____",
+          "    else: return (left, right)"
+        ],
+        "expected_focus": "Use right = right - 1 and justify the discarded pairs from sorted order."
+      },
+      "independent_practice": {
+        "exercise": "Trace whether sorted values [2, 5, 6, 9, 14] contain a pair with sum 15. Write each pointer move and the reason for it.",
+        "stop_rule": "Trace your answer, test the smallest input and one ordinary input, then explain its cost.",
+        "evidence": "Your steps, expected answers, and time and memory estimates."
+      },
+      "feedback_checklist": [
+        "Can you explain why each step keeps the answer correct?",
+        "Did you try an empty or smallest input?",
+        "Can you explain the time and extra memory?",
+        "What would you change after checking your result?"
+      ],
+      "exit_summary": "State in two or three sentences why one-way movement gives a linear bound. Then answer: what would make this method invalid?",
+      "course_module": "03-searching"
+    },
+    {
+      "id": "binary-search-interval-invariant",
+      "title": "Binary search",
+      "sequence": 4,
+      "duration_minutes": 45,
+      "tool_time_ceiling_minutes": 8,
+      "outcomes": {
+        "foundation": "Find a value by halving the remaining sorted interval.",
+        "interview": "Explain why each comparison discards half the remaining candidates.",
+        "professional_transfer": "Choose indexed logarithmic lookup when ordered data justifies update costs."
+      },
+      "target": "Find a value by halving the remaining sorted interval.",
+      "expected_complexity": "O(log n) time and O(1) extra space.",
+      "curriculum_context": {
+        "part_of": "Searching arrays and using windows",
+        "prerequisites": [
+          "Arrays and positions"
+        ],
+        "selection_dimensions": [
+          "input is sorted",
+          "random indexing is available",
+          "a monotone comparison can eliminate an interval"
+        ]
+      },
+      "schedule": [
+        [
+          "retrieval opener",
+          3
+        ],
+        [
+          "concept model",
+          7
+        ],
+        [
+          "worked trace",
+          7
+        ],
+        [
+          "guided construction",
+          8
+        ],
+        [
+          "contrast",
+          4
+        ],
+        [
+          "deliberate practice",
+          10
+        ],
+        [
+          "feedback and exit",
+          6
+        ]
+      ],
+      "theory": "Binary search finds a value in sorted data by repeatedly checking the middle. Here both endpoints are included. If the middle value is smaller than the target, discard it and everything to its left. If it is larger, discard it and everything to its right. Any possible match stays between the endpoints. Stop when a match is found or left becomes greater than right. Each comparison halves the remaining interval, giving O(log n) time and O(1) extra space.",
+      "visual": {
+        "kind": "binary-search-interval-trace",
+        "label": "Sorted values [2, 5, 8, 12, 16, 21], target 16; brackets are the candidate interval.",
+        "prediction_checkpoint": "Before state 3, predict the new left boundary after 12 is too small.",
+        "required_controls": [
+          "play",
+          "pause",
+          "step",
+          "reset"
+        ],
+        "states": [
+          {
+            "step": 1,
+            "values": [
+              2,
+              5,
+              8,
+              12,
+              16,
+              21
+            ],
+            "left": 0,
+            "right": 5,
+            "middle": 2,
+            "message": "middle 8 is too small; candidates 0 through 2 are discarded."
+          },
+          {
+            "step": 2,
+            "values": [
+              2,
+              5,
+              8,
+              12,
+              16,
+              21
+            ],
+            "left": 3,
+            "right": 5,
+            "middle": 4,
+            "message": "middle 16 matches; the interval still stated where a target could be."
+          },
+          {
+            "step": 3,
+            "values": [
+              2,
+              5,
+              8,
+              12,
+              16,
+              21
+            ],
+            "left": 3,
+            "right": 3,
+            "middle": 3,
+            "message": "For target 12, the matching singleton interval gives the answer."
+          }
+        ]
+      },
+      "question_provenance": "project-authored-review-required",
+      "pre_code_checkpoint": {
+        "purpose": "Name the input, the answer, what you keep between steps, and why this method fits.",
+        "prompts": [
+          {
+            "lens": "input_output",
+            "label": "Input and output",
+            "prompt": "What sorted collection and target are given, and what should absence return?"
+          },
+          {
+            "lens": "constraint",
+            "label": "Constraint",
+            "prompt": "Which bounds prevent a middle read after the interval is empty?"
+          },
+          {
+            "lens": "state_invariant",
+            "label": "State and invariant",
+            "prompt": "What does the inclusive interval guarantee before each comparison?"
+          },
+          {
+            "lens": "selection",
+            "label": "Technique selection",
+            "prompt": "Why does sorted indexed data justify binary search rather than a scan?"
+          }
+        ]
+      },
+      "questions": [
+        {
+          "kind": "retrieval",
+          "prompt": "What property must hold before binary search can discard a half?",
+          "feedback": "The values must be ordered under the comparison used."
+        },
+        {
+          "kind": "invariant",
+          "prompt": "What must be true of a present target before each loop iteration?",
+          "feedback": "It lies within the current candidate interval."
+        },
+        {
+          "kind": "next-state",
+          "prompt": "If middle is too small, which boundary changes?",
+          "feedback": "Set left to middle + 1."
+        },
+        {
+          "kind": "contrast",
+          "prompt": "When is a hash table preferable?",
+          "feedback": "When identity lookup matters more than ordered traversal and expected-time assumptions are acceptable."
+        },
+        {
+          "kind": "invalid-use",
+          "prompt": "What makes binary search invalid?",
+          "feedback": "Unsorted data or a comparison that does not define a monotone partition."
+        }
+      ],
+      "worked_example": {
+        "input": "[2, 5, 8, 12, 16, 21], target 16",
+        "model": "Compare 8, then retain [12, 16, 21]; compare 16 and return its index. The discarded values cannot equal the target by order.",
+        "boundary_test": "An empty interval returns absence without computing a middle."
+      },
+      "faded_scaffold": {
+        "prompt": "Complete the boundary update.",
+        "pseudocode": [
+          "while left <= right:",
+          "    middle = (left + right) // 2",
+          "    if values[middle] < target: left = middle + 1",
+          "    elif values[middle] > target: ____",
+          "    else: return middle"
+        ],
+        "expected_focus": "Use right = middle - 1 and justify the discarded ordered suffix."
+      },
+      "independent_practice": {
+        "exercise": "Trace a search for 7 in [1, 4, 7, 9, 15], then explain why a search for 6 ends safely.",
+        "stop_rule": "Trace your answer, test the smallest input and one ordinary input, then explain its cost.",
+        "evidence": "Your steps, expected answers, and time and memory estimates."
+      },
+      "feedback_checklist": [
+        "Can you explain why each step keeps the answer correct?",
+        "Did you try an empty or smallest input?",
+        "Can you explain the time and extra memory?",
+        "What would you change after checking your result?"
+      ],
+      "exit_summary": "Explain why middle is excluded after a strict comparison, then name an invalid use.",
+      "course_module": "03-searching"
+    },
+    {
+      "id": "linked-lists-rewiring-contracts",
+      "title": "Changing linked-list connections",
+      "sequence": 5,
+      "duration_minutes": 45,
+      "tool_time_ceiling_minutes": 8,
+      "outcomes": {
+        "foundation": "Insert or remove a node while keeping the remaining list connected.",
+        "interview": "Trace insertion or removal without losing the remaining suffix.",
+        "professional_transfer": "Choose node links when local rewiring matters more than indexed access."
+      },
+      "target": "Insert or remove a node while keeping the remaining list connected.",
+      "expected_complexity": "Traversal is O(n); insertion or removal after a known predecessor is O(1) time and O(1) extra space.",
+      "curriculum_context": {
+        "part_of": "Arrays, lists, stacks, and queues",
+        "prerequisites": [
+          "Arrays and positions"
+        ],
+        "selection_dimensions": [
+          "local insertion or removal follows a known node",
+          "indexed lookup is not central",
+          "a head-to-tail connection contract is explicit"
+        ]
+      },
+      "schedule": [
+        [
+          "retrieval opener",
+          3
+        ],
+        [
+          "concept model",
+          7
+        ],
+        [
+          "worked trace",
+          7
+        ],
+        [
+          "guided construction",
+          8
+        ],
+        [
+          "contrast",
+          4
+        ],
+        [
+          "deliberate practice",
+          10
+        ],
+        [
+          "feedback and exit",
+          6
+        ]
+      ],
+      "theory": "A linked list stores a next-node reference at each node. In A → B → C, removing B means changing A.next to C. Reading B.next before changing links keeps the remaining list available. Inserting X between A and B needs two steps: first set X.next to B, then set A.next to X. Each local change takes O(1) when the previous node is already known; finding that node can take O(n).",
+      "visual": {
+        "kind": "linked-list-rewire-trace",
+        "label": "head → A → B → C; remove B while retaining C.",
+        "prediction_checkpoint": "Before state 3, predict which reference must still reach C.",
+        "required_controls": [
+          "play",
+          "pause",
+          "step",
+          "reset"
+        ],
+        "states": [
+          {
+            "step": 1,
+            "head": "A",
+            "links": {
+              "A": "B",
+              "B": "C",
+              "C": null
+            },
+            "message": "The reachable sequence is A, B, C."
+          },
+          {
+            "step": 2,
+            "head": "A",
+            "current": "B",
+            "successor": "C",
+            "message": "Record B's successor C before unlinking B."
+          },
+          {
+            "step": 3,
+            "head": "A",
+            "links": {
+              "A": "C",
+              "B": null,
+              "C": null
+            },
+            "message": "Set A.next to C; head still reaches every retained node."
+          }
+        ]
+      },
+      "question_provenance": "project-authored-review-required",
+      "pre_code_checkpoint": {
+        "purpose": "Name the input, the answer, what you keep between steps, and why this method fits.",
+        "prompts": [
+          {
+            "lens": "input_output",
+            "label": "Input and output",
+            "prompt": "Which node is removed or inserted, and what head should result?"
+          },
+          {
+            "lens": "constraint",
+            "label": "Constraint",
+            "prompt": "Which null cases must be handled before following next?"
+          },
+          {
+            "lens": "state_invariant",
+            "label": "State and invariant",
+            "prompt": "Which nodes must remain reachable from head after each rewrite?"
+          },
+          {
+            "lens": "selection",
+            "label": "Technique selection",
+            "prompt": "Why are links preferable to array shifting for this operation?"
+          }
+        ]
+      },
+      "questions": [
+        {
+          "kind": "retrieval",
+          "prompt": "What does a next reference represent?",
+          "feedback": "The next node in the reachable sequence, or null at the end."
+        },
+        {
+          "kind": "invariant",
+          "prompt": "What must remain true after removing B?",
+          "feedback": "Every retained node remains reachable from head exactly through the intended links."
+        },
+        {
+          "kind": "next-state",
+          "prompt": "After saving C, what should A.next become to remove B?",
+          "feedback": "C."
+        },
+        {
+          "kind": "contrast",
+          "prompt": "When is an array a better fit?",
+          "feedback": "When direct positional lookup or compact traversal is more important."
+        },
+        {
+          "kind": "invalid-use",
+          "prompt": "What rewiring error loses data?",
+          "feedback": "Overwriting the only reference to a needed successor before preserving it."
+        }
+      ],
+      "worked_example": {
+        "input": "head → A → B → C; remove B",
+        "model": "Find predecessor A, retain successor C, then set A.next to C. The sequence from head is A, C.",
+        "boundary_test": "Removing the head requires returning its successor as the new head."
+      },
+      "faded_scaffold": {
+        "prompt": "Complete removal after a known predecessor.",
+        "pseudocode": [
+          "removed = previous.next",
+          "if removed is not null:",
+          "    ____ = removed.next",
+          "return head"
+        ],
+        "expected_focus": "Use previous.next and explain the resulting connection."
+      },
+      "independent_practice": {
+        "exercise": "Insert X between A and B in head → A → B. Trace links before and after.",
+        "stop_rule": "Trace your answer, test the smallest input and one ordinary input, then explain its cost.",
+        "evidence": "Your steps, expected answers, and time and memory estimates."
+      },
+      "feedback_checklist": [
+        "Can you explain why each step keeps the answer correct?",
+        "Did you try an empty or smallest input?",
+        "Can you explain the time and extra memory?",
+        "What would you change after checking your result?"
+      ],
+      "exit_summary": "Explain how one overwritten next reference can disconnect a suffix.",
+      "course_module": "02-arrays"
+    },
+    {
+      "id": "stacks-queues-order-contracts",
+      "title": "Stacks and queues",
+      "sequence": 6,
+      "duration_minutes": 45,
+      "tool_time_ceiling_minutes": 8,
+      "outcomes": {
+        "foundation": "Choose which item should leave next: the newest or the oldest.",
+        "interview": "Select a stack or queue and justify processing order.",
+        "professional_transfer": "Choose an explicit collection policy for undo, scheduling, or breadth-oriented processing."
+      },
+      "target": "Choose which item should leave next: the newest or the oldest.",
+      "expected_complexity": "Push/enqueue and pop/dequeue are O(1) with an appropriate representation; storage is O(n).",
+      "curriculum_context": {
+        "part_of": "Arrays, lists, stacks, and queues",
+        "prerequisites": [
+          "Arrays and positions"
+        ],
+        "selection_dimensions": [
+          "processing order is the main decision",
+          "items are added and removed incrementally",
+          "front/back or top state can be represented explicitly"
+        ]
+      },
+      "schedule": [
+        [
+          "retrieval opener",
+          3
+        ],
+        [
+          "concept model",
+          7
+        ],
+        [
+          "worked trace",
+          7
+        ],
+        [
+          "guided construction",
+          8
+        ],
+        [
+          "contrast",
+          4
+        ],
+        [
+          "deliberate practice",
+          10
+        ],
+        [
+          "feedback and exit",
+          6
+        ]
+      ],
+      "theory": "A stack removes the newest item first; a queue removes the oldest. After adding A, B, C, a stack returns C and a queue returns A. Use a stack for undo history or unfinished nested work. Use a queue for jobs that should run in arrival order. Check whether the structure is empty before removing an item. Use a suitable implementation: removing the front of a Python list shifts other items, whereas a deque supports efficient removal at either end.",
+      "visual": {
+        "kind": "worklist-order-trace",
+        "label": "Items A, B, C enter; stack and queue expose different next items.",
+        "prediction_checkpoint": "Before state 3, predict which item each policy removes next.",
+        "required_controls": [
+          "play",
+          "pause",
+          "step",
+          "reset"
+        ],
+        "states": [
+          {
+            "step": 1,
+            "stack": [
+              "A",
+              "B"
+            ],
+            "queue": [
+              "A",
+              "B"
+            ],
+            "message": "B is stack top; A is queue front."
+          },
+          {
+            "step": 2,
+            "stack": [
+              "A",
+              "B",
+              "C"
+            ],
+            "queue": [
+              "A",
+              "B",
+              "C"
+            ],
+            "message": "C is added to the stack top and queue back."
+          },
+          {
+            "step": 3,
+            "stack_next": "C",
+            "queue_next": "A",
+            "message": "LIFO removes C; FIFO removes A."
+          }
+        ]
+      },
+      "question_provenance": "project-authored-review-required",
+      "pre_code_checkpoint": {
+        "purpose": "Name the input, the answer, what you keep between steps, and why this method fits.",
+        "prompts": [
+          {
+            "lens": "input_output",
+            "label": "Input and output",
+            "prompt": "What work items arrive, and which item must be processed next?"
+          },
+          {
+            "lens": "constraint",
+            "label": "Constraint",
+            "prompt": "Which end must support constant-time insertion and removal?"
+          },
+          {
+            "lens": "state_invariant",
+            "label": "State and invariant",
+            "prompt": "What item is guaranteed at the top or front?"
+          },
+          {
+            "lens": "selection",
+            "label": "Technique selection",
+            "prompt": "Why does LIFO or FIFO fit the required order?"
+          }
+        ]
+      },
+      "questions": [
+        {
+          "kind": "retrieval",
+          "prompt": "Which policy returns the most recent item?",
+          "feedback": "A stack, using LIFO."
+        },
+        {
+          "kind": "invariant",
+          "prompt": "What does a queue front represent?",
+          "feedback": "The earliest item not yet processed."
+        },
+        {
+          "kind": "next-state",
+          "prompt": "After A, B, C enter a stack, what pop returns?",
+          "feedback": "C."
+        },
+        {
+          "kind": "contrast",
+          "prompt": "When does a queue beat a stack?",
+          "feedback": "When arrival order must be preserved, such as breadth-first processing."
+        },
+        {
+          "kind": "invalid-use",
+          "prompt": "What makes a stack choice invalid?",
+          "feedback": "A requirement to process the oldest waiting item first."
+        }
+      ],
+      "worked_example": {
+        "input": "Events A, B, C; process one item",
+        "model": "A stack processes C; a queue processes A. State the policy before choosing an implementation.",
+        "boundary_test": "Removing from an empty collection must return a declared absence or raise a handled error."
+      },
+      "faded_scaffold": {
+        "prompt": "Complete FIFO removal.",
+        "pseudocode": [
+          "enqueue(item) at back",
+          "if queue is empty: return absent",
+          "next_item = ____",
+          "return next_item"
+        ],
+        "expected_focus": "Remove from the front, not the back."
+      },
+      "independent_practice": {
+        "exercise": "Choose an undo history or print-job scheduler, state the policy, and trace three operations.",
+        "stop_rule": "Trace your answer, test the smallest input and one ordinary input, then explain its cost.",
+        "evidence": "Your steps, expected answers, and time and memory estimates."
+      },
+      "feedback_checklist": [
+        "Can you explain why each step keeps the answer correct?",
+        "Did you try an empty or smallest input?",
+        "Can you explain the time and extra memory?",
+        "What would you change after checking your result?"
+      ],
+      "exit_summary": "Explain why a queue and stack cannot be substituted when order is observable.",
+      "course_module": "02-arrays"
+    },
+    {
+      "id": "trees-recursive-return-contracts",
+      "title": "Recursion on trees",
+      "sequence": 7,
+      "duration_minutes": 45,
+      "tool_time_ceiling_minutes": 8,
+      "outcomes": {
+        "foundation": "Combine child answers to compute an answer for the whole tree.",
+        "interview": "Trace a recursive tree computation with a correctness argument.",
+        "professional_transfer": "Use recursive decomposition when a hierarchy has the same contract at each child."
+      },
+      "target": "Combine child answers to compute an answer for the whole tree.",
+      "expected_complexity": "A full traversal is O(n) time and O(h) call-stack space for height h.",
+      "curriculum_context": {
+        "part_of": "Search trees and larger indexes",
+        "prerequisites": [
+          "Stacks and queues"
+        ],
+        "selection_dimensions": [
+          "input has parent-child hierarchy",
+          "each subtree supports the same subproblem",
+          "a base case is explicit"
+        ]
+      },
+      "schedule": [
+        [
+          "retrieval opener",
+          3
+        ],
+        [
+          "concept model",
+          7
+        ],
+        [
+          "worked trace",
+          7
+        ],
+        [
+          "guided construction",
+          8
+        ],
+        [
+          "contrast",
+          4
+        ],
+        [
+          "deliberate practice",
+          10
+        ],
+        [
+          "feedback and exit",
+          6
+        ]
+      ],
+      "theory": "A recursive tree function answers the same question for each subtree. To sum a tree, an absent node contributes zero. Otherwise, add the current value to the sums returned by the left and right children. If a root 4 has leaves 2 and 7, the leaves return 2 and 7 and the root returns 13. Every node is visited once, giving O(n) time. The active calls follow a path of height h, using O(h) extra space.",
+      "visual": {
+        "kind": "tree-return-trace",
+        "label": "Tree with root 4 and children 2 and 7; compute subtree sum.",
+        "prediction_checkpoint": "Before state 3, predict the value returned to the root from its right child.",
+        "required_controls": [
+          "play",
+          "pause",
+          "step",
+          "reset"
+        ],
+        "states": [
+          {
+            "step": 1,
+            "node": 2,
+            "return_value": 2,
+            "message": "Leaf 2 returns its own value because both child sums are zero."
+          },
+          {
+            "step": 2,
+            "node": 7,
+            "return_value": 7,
+            "message": "Leaf 7 returns 7 under the same contract."
+          },
+          {
+            "step": 3,
+            "node": 4,
+            "left_return": 2,
+            "right_return": 7,
+            "return_value": 13,
+            "message": "Root combines 4 + 2 + 7 and returns 13."
+          }
+        ]
+      },
+      "question_provenance": "project-authored-review-required",
+      "pre_code_checkpoint": {
+        "purpose": "Name the input, the answer, what you keep between steps, and why this method fits.",
+        "prompts": [
+          {
+            "lens": "input_output",
+            "label": "Input and output",
+            "prompt": "What subtree enters the function, and what summary must return?"
+          },
+          {
+            "lens": "constraint",
+            "label": "Constraint",
+            "prompt": "What null or depth limit supplies the base case?"
+          },
+          {
+            "lens": "state_invariant",
+            "label": "State and invariant",
+            "prompt": "What does each recursive return guarantee about its subtree?"
+          },
+          {
+            "lens": "selection",
+            "label": "Technique selection",
+            "prompt": "Why does structural recursion fit better than an indexed scan?"
+          }
+        ]
+      },
+      "questions": [
+        {
+          "kind": "retrieval",
+          "prompt": "What should a null subtree return for a sum?",
+          "feedback": "The additive identity, zero."
+        },
+        {
+          "kind": "invariant",
+          "prompt": "What must every call return?",
+          "feedback": "The correct summary for exactly the subtree rooted at its input."
+        },
+        {
+          "kind": "next-state",
+          "prompt": "If left and right return 2 and 7 at node 4, what returns?",
+          "feedback": "13."
+        },
+        {
+          "kind": "contrast",
+          "prompt": "When might an explicit stack be preferable?",
+          "feedback": "When recursion depth is unsafe or iterative control is required."
+        },
+        {
+          "kind": "invalid-use",
+          "prompt": "What makes this recursive sum invalid?",
+          "feedback": "A missing base case or combining a child result outside its declared contract."
+        }
+      ],
+      "worked_example": {
+        "input": "root 4 with leaves 2 and 7",
+        "model": "Leaves return their values; root combines its value and both child sums to return 13.",
+        "boundary_test": "A null root returns zero without accessing a child."
+      },
+      "faded_scaffold": {
+        "prompt": "Complete subtree sum.",
+        "pseudocode": [
+          "if node is null: return 0",
+          "left = sum(node.left)",
+          "right = sum(node.right)",
+          "return ____"
+        ],
+        "expected_focus": "Return node.value + left + right."
+      },
+      "independent_practice": {
+        "exercise": "Trace height for a root with one leaf child, defining the null height first.",
+        "stop_rule": "Trace your answer, test the smallest input and one ordinary input, then explain its cost.",
+        "evidence": "Your steps, expected answers, and time and memory estimates."
+      },
+      "feedback_checklist": [
+        "Can you explain why each step keeps the answer correct?",
+        "Did you try an empty or smallest input?",
+        "Can you explain the time and extra memory?",
+        "What would you change after checking your result?"
+      ],
+      "exit_summary": "Explain why the induction claim is about every subtree, not only the root.",
+      "course_module": "07-trees"
+    },
+    {
+      "id": "bfs-dfs-frontier-visited-contracts",
+      "title": "Breadth-first and depth-first search",
+      "sequence": 8,
+      "duration_minutes": 45,
+      "tool_time_ceiling_minutes": 8,
+      "outcomes": {
+        "foundation": "Visit graph vertices once and choose an order that fits the question.",
+        "interview": "Select BFS or DFS and state the visit invariant.",
+        "professional_transfer": "Choose traversal order according to nearest-layer, exhaustive exploration, or resource constraints."
+      },
+      "target": "Visit graph vertices once and choose an order that fits the question.",
+      "expected_complexity": "With adjacency lists, traversal is O(V + E) time and O(V) space.",
+      "curriculum_context": {
+        "part_of": "Graph representations and traversal",
+        "prerequisites": [
+          "Stacks and queues",
+          "Hash tables and collisions"
+        ],
+        "selection_dimensions": [
+          "input is a graph or relation network",
+          "revisits are possible",
+          "processing order changes the useful result"
+        ]
+      },
+      "schedule": [
+        [
+          "retrieval opener",
+          3
+        ],
+        [
+          "concept model",
+          7
+        ],
+        [
+          "worked trace",
+          7
+        ],
+        [
+          "guided construction",
+          8
+        ],
+        [
+          "contrast",
+          4
+        ],
+        [
+          "deliberate practice",
+          10
+        ],
+        [
+          "feedback and exit",
+          6
+        ]
+      ],
+      "theory": "BFS uses a queue to visit vertices in increasing number of edges from the start. DFS uses a stack or recursive calls to follow one branch before returning. Keep a visited set so cycles do not cause repeated work. For BFS, mark each new vertex before adding it to the queue. With A connected to B and C, both are one edge away; a new neighbor of B is at most two edges away. BFS finds shortest edge counts in unweighted graphs. Both traversals take O(V + E) with adjacency lists.",
+      "visual": {
+        "kind": "graph-frontier-trace",
+        "label": "Edges A-B, A-C, B-D; BFS begins at A.",
+        "prediction_checkpoint": "Before state 3, predict which frontier vertex is processed next and why.",
+        "required_controls": [
+          "play",
+          "pause",
+          "step",
+          "reset"
+        ],
+        "states": [
+          {
+            "step": 1,
+            "visited": [
+              "A"
+            ],
+            "frontier": [
+              "A"
+            ],
+            "message": "A is discovered and awaits processing."
+          },
+          {
+            "step": 2,
+            "visited": [
+              "A",
+              "B",
+              "C"
+            ],
+            "frontier": [
+              "B",
+              "C"
+            ],
+            "message": "Processing A discovers B and C; queue order preserves B before C."
+          },
+          {
+            "step": 3,
+            "visited": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "frontier": [
+              "C",
+              "D"
+            ],
+            "message": "Processing B discovers D once; B is not rediscovered through an existing edge."
+          }
+        ]
+      },
+      "question_provenance": "project-authored-review-required",
+      "pre_code_checkpoint": {
+        "purpose": "Name the input, the answer, what you keep between steps, and why this method fits.",
+        "prompts": [
+          {
+            "lens": "input_output",
+            "label": "Input and output",
+            "prompt": "What start vertex and traversal result are required?"
+          },
+          {
+            "lens": "constraint",
+            "label": "Constraint",
+            "prompt": "How will missing adjacency lists or cycles be handled?"
+          },
+          {
+            "lens": "state_invariant",
+            "label": "State and invariant",
+            "prompt": "What is true of visited and every frontier vertex?"
+          },
+          {
+            "lens": "selection",
+            "label": "Technique selection",
+            "prompt": "Why does BFS or DFS match the desired order?"
+          }
+        ]
+      },
+      "questions": [
+        {
+          "kind": "retrieval",
+          "prompt": "Which frontier structure does BFS use?",
+          "feedback": "A FIFO queue."
+        },
+        {
+          "kind": "invariant",
+          "prompt": "Why mark visited at discovery?",
+          "feedback": "It prevents duplicate frontier entries and repeated processing."
+        },
+        {
+          "kind": "next-state",
+          "prompt": "After A discovers B then C in BFS, which is processed next?",
+          "feedback": "B, the earlier enqueued vertex."
+        },
+        {
+          "kind": "contrast",
+          "prompt": "When does DFS fit better than BFS?",
+          "feedback": "When depth-first exploration or postorder-like work is useful and shortest unweighted distance is not required."
+        },
+        {
+          "kind": "invalid-use",
+          "prompt": "What makes a BFS shortest-path claim invalid?",
+          "feedback": "Weighted edges or a frontier policy other than FIFO invalidate that unweighted-distance claim."
+        }
+      ],
+      "worked_example": {
+        "input": "A-B, A-C, B-D; start A",
+        "model": "Discover A, then B and C, then process B before C and discover D. Visited prevents duplicate work.",
+        "boundary_test": "A start vertex with no adjacency list still produces a one-vertex traversal if it exists."
+      },
+      "faded_scaffold": {
+        "prompt": "Complete BFS neighbor discovery.",
+        "pseudocode": [
+          "visited = {start}; queue = [start]",
+          "while queue:",
+          "    vertex = dequeue(queue)",
+          "    for neighbor in graph[vertex]:",
+          "        if neighbor not in visited:",
+          "            visited.add(neighbor); ____"
+        ],
+        "expected_focus": "Enqueue neighbor after marking it visited."
+      },
+      "independent_practice": {
+        "exercise": "For edges A-B, B-C, A-C, trace BFS from A and explain why C is enqueued once.",
+        "stop_rule": "Trace your answer, test the smallest input and one ordinary input, then explain its cost.",
+        "evidence": "Your steps, expected answers, and time and memory estimates."
+      },
+      "feedback_checklist": [
+        "Can you explain why each step keeps the answer correct?",
+        "Did you try an empty or smallest input?",
+        "Can you explain the time and extra memory?",
+        "What would you change after checking your result?"
+      ],
+      "exit_summary": "Explain why a queue gives BFS its layer order.",
+      "course_module": "11-graphs"
+    },
+    {
+      "id": "dynamic-programming-dependency-contracts",
+      "title": "Building a dynamic-programming table",
+      "sequence": 9,
+      "duration_minutes": 45,
+      "tool_time_ceiling_minutes": 8,
+      "outcomes": {
+        "foundation": "Define each table entry and build it from earlier answers.",
+        "interview": "Build and justify a small DP recurrence.",
+        "professional_transfer": "Choose cached subproblems when repeated overlapping computation dominates a direct recursion."
+      },
+      "target": "Define each table entry and build it from earlier answers.",
+      "expected_complexity": "For n linear states with constant work each, O(n) time and O(n) space; some recurrences permit O(1) retained space.",
+      "curriculum_context": {
+        "part_of": "Dynamic programming",
+        "prerequisites": [
+          "Recursion on trees",
+          "Arrays and positions"
+        ],
+        "selection_dimensions": [
+          "subproblems overlap",
+          "a recurrence has smaller acyclic dependencies",
+          "an objective or count can be summarized in a state"
+        ]
+      },
+      "schedule": [
+        [
+          "retrieval opener",
+          3
+        ],
+        [
+          "concept model",
+          7
+        ],
+        [
+          "worked trace",
+          7
+        ],
+        [
+          "guided construction",
+          8
+        ],
+        [
+          "contrast",
+          4
+        ],
+        [
+          "deliberate practice",
+          10
+        ],
+        [
+          "feedback and exit",
+          6
+        ]
+      ],
+      "theory": "Dynamic programming saves answers to smaller problems and reuses them. Let ways[i] count sequences of one-step and two-step moves reaching position i. The final move came from i - 1 or i - 2, so add those two counts. Start with ways[0] = 1 for the empty sequence and ways[1] = 1. Then ways[2] = 2 and ways[3] = 3. Fill smaller positions first so every value you need is ready. This takes O(n) time; keeping only the last two values uses O(1) extra space.",
+      "visual": {
+        "kind": "dp-dependency-trace",
+        "label": "ways(n) with steps one or two; each cell depends on its two earlier cells.",
+        "prediction_checkpoint": "Before state 3, predict ways(3) from the shown dependencies.",
+        "required_controls": [
+          "play",
+          "pause",
+          "step",
+          "reset"
+        ],
+        "states": [
+          {
+            "step": 1,
+            "table": {
+              "0": 1,
+              "1": 1
+            },
+            "message": "Base cases define one way to make zero and one."
+          },
+          {
+            "step": 2,
+            "table": {
+              "0": 1,
+              "1": 1,
+              "2": 2
+            },
+            "dependencies": [
+              1,
+              0
+            ],
+            "message": "ways(2) is ways(1) + ways(0) = 2."
+          },
+          {
+            "step": 3,
+            "table": {
+              "0": 1,
+              "1": 1,
+              "2": 2,
+              "3": 3
+            },
+            "dependencies": [
+              2,
+              1
+            ],
+            "message": "ways(3) is 2 + 1 = 3 after both dependencies are correct."
+          }
+        ]
+      },
+      "question_provenance": "project-authored-review-required",
+      "pre_code_checkpoint": {
+        "purpose": "Name the input, the answer, what you keep between steps, and why this method fits.",
+        "prompts": [
+          {
+            "lens": "input_output",
+            "label": "Input and output",
+            "prompt": "What input size or objective is given, and what value should state n represent?"
+          },
+          {
+            "lens": "constraint",
+            "label": "Constraint",
+            "prompt": "Which base cases and invalid indices must be handled?"
+          },
+          {
+            "lens": "state_invariant",
+            "label": "State and invariant",
+            "prompt": "What does every completed table entry guarantee?"
+          },
+          {
+            "lens": "selection",
+            "label": "Technique selection",
+            "prompt": "Why does overlap justify DP rather than recomputing recursion?"
+          }
+        ]
+      },
+      "questions": [
+        {
+          "kind": "retrieval",
+          "prompt": "What does a DP table entry represent?",
+          "feedback": "A precisely defined answer for one subproblem."
+        },
+        {
+          "kind": "invariant",
+          "prompt": "What must hold before computing ways(i)?",
+          "feedback": "Every state named in its recurrence has the correct value."
+        },
+        {
+          "kind": "next-state",
+          "prompt": "If ways(2)=2 and ways(1)=1, what is ways(3)?",
+          "feedback": "3."
+        },
+        {
+          "kind": "contrast",
+          "prompt": "When is plain recursion acceptable?",
+          "feedback": "When subproblems do not overlap materially or the input is intentionally tiny."
+        },
+        {
+          "kind": "invalid-use",
+          "prompt": "What makes a recurrence invalid?",
+          "feedback": "Dependencies that are undefined, cyclic without a resolution rule, or do not match the stated state meaning."
+        }
+      ],
+      "worked_example": {
+        "input": "Number of ways to reach 3 using steps of one or two",
+        "model": "Set ways(0)=1, ways(1)=1, ways(2)=2, then ways(3)=3. Each state depends only on completed smaller states.",
+        "boundary_test": "For n=0, return the declared base value rather than accessing negative indices."
+      },
+      "faded_scaffold": {
+        "prompt": "Complete the recurrence fill.",
+        "pseudocode": [
+          "if n == 0: return 1",
+          "ways[0] = 1",
+          "ways[1] = 1",
+          "for i from 2 through n:",
+          "    ways[i] = ____",
+          "return ways[n]"
+        ],
+        "expected_focus": "Use ways[i - 1] + ways[i - 2] and state why both are ready."
+      },
+      "independent_practice": {
+        "exercise": "Define a state and fill a table for the minimum number of one-or-two steps to reach 4.",
+        "stop_rule": "Trace your answer, test the smallest input and one ordinary input, then explain its cost.",
+        "evidence": "Your steps, expected answers, and time and memory estimates."
+      },
+      "feedback_checklist": [
+        "Can you explain why each step keeps the answer correct?",
+        "Did you try an empty or smallest input?",
+        "Can you explain the time and extra memory?",
+        "What would you change after checking your result?"
+      ],
+      "exit_summary": "Explain why a DP table cannot be trusted without a state definition and dependency proof.",
+      "course_module": "09-dynamic-programming"
+    }
+  ]
+}
